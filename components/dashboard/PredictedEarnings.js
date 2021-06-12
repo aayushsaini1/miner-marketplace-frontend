@@ -1,35 +1,33 @@
 import {} from "@chakra-ui/react";
 import React from "react";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { useRouter } from "next/router";
 
-const PredictedEarnings = (miner) => {
-  console.log("miner", miner);
+const PredictedEarnings = (earning) => {
+  console.log(earning);
   return <></>;
 };
 
 export default PredictedEarnings;
 
 export async function getStaticProps() {
-  const client = new ApolloClient({
-    uri: process.env.BACKEND_URL,
+  client = new ApolloClient({
+    uri: "https://miner-marketplace-backend.onrender.com/query",
     cache: new InMemoryCache(),
   });
-
   const { data } = await client.query({
     query: gql`
       query {
-        miner(id: "f08403") {
-          id
-          qualityAdjustedPower
+        networkStats {
+          activeMinersCount
+          networkStorageCapacity
+          dataStored
         }
       }
     `,
   });
-
   return {
     props: {
-      miner: data.miner,
+      earning: data.networkStats,
     },
   };
 }
